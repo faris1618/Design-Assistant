@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONLINE LOAD CALCULATOR</title>
+    <link rel="stylesheet" type="text/css" href="load_style.css">
+    <script src="load_script.js" defer></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const inputs = document.querySelectorAll(".input-space");
+
+            inputs.forEach((input, index) => {
+                input.addEventListener("keydown", function (event) {
+                    if (event.key === "Enter") {
+                        event.preventDefault(); // Prevent form submission on Enter
+                        const nextInput = inputs[index + 1];
+                        if (nextInput) {
+                            nextInput.focus(); // Move focus to the next input
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="mainframe">
+        <div class="input-grid">
+            <!-- Row 1 -->
+            <div class="input-group">
+                <label class="input-label" for="length1">Building Length:</label>
+                <input type="number" class="input-space" id="bl">
+            </div>
+            <div class="input-group">
+                <label class="input-label" for="width1">Building Width:</label>
+                <input type="number" class="input-space" id="bw">
+            </div>
+            <div class="input-group">
+                <label class="input-label" for="eave1">Eave Height:</label>
+                <input type="number" class="input-space" id="eh">
+            </div>
+
+            <!-- Row 2 -->
+            <div class="input-group">
+                <label class="input-label" for="slope1">Slope:</label>
+                <input type="number" class="input-space" id="s">
+            </div>
+            <div class="input-group">
+                <label class="input-label" for="length2">Blockwall Height:</label>
+                <input type="number" class="input-space" id="bwh">
+            </div>
+            <div class="input-group">
+                <label class="input-label" for="width2">Seismic Coefficient:</label>
+                <input type="number" class="input-space" id="cs">
+            </div>
+
+            <!-- Row 3 -->
+            <div class="input-group">
+                <label class="input-label" for="eave2">Total Frame Weight:</label>
+                <input type="number" class="input-space" id="wt">
+            </div>
+            <div class="input-group">
+                <label class="input-label" for="slope2">Total Endwall Column Weight:</label>
+                <input type="number" class="input-space" id="ewcwt">
+            </div>
+            <div class="input-group">
+                <label class="input-label" for="extra1">Dead Load:</label>
+                <input type="number" class="input-space" id="dl">
+            </div>
+
+            <!-- Row 4 -->
+            <div class="input-group">
+                <label class="input-label" for="extra2">Collateral Load:</label>
+                <input type="number" class="input-space" id="cl">
+            </div>
+            <div class="input-group">
+                <label class="input-label" for="extra3">Basic Wind:</label>
+                <input type="number" class="input-space" id="bsw">
+            </div>
+            <div class="input-group">
+                <label class="input-label" for="extra4">Number of Braced bays:</label>
+                <input type="number" class="input-space" id="bb">
+            </div>
+        </div>
+        <button id="calculate-button" type="button" onclick="calculate_brf()">CALCULATE BRACING FORCE</button>
+
+        <!-- Results Display -->
+        <div id="results">
+            <div id="sbf">Seismic Bracing Force (horizontal): </div>
+            <div id="wbf">Wind Bracing Force (horizontal): </div>
+        </div>
+        
+    </div>
+</body>
+
+</html>
