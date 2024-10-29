@@ -19,7 +19,7 @@ body{
   text-decoration-thickness: 2px;
 }
 
-#interpol-button{
+#buttons{
     margin: 50px;
     border-color: #39FF14;
     border-radius: 5px;
@@ -31,7 +31,7 @@ body{
     font-size: 20px;
     transition: color 0.2s ease, backgroun 0.2s ease;
 }
-#interpol-button:hover{
+#buttons:hover{
     color: black;
     background: #39FF14;
 }
