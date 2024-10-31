@@ -55,7 +55,6 @@ body {
     border: none;
     margin-left: 200px;
     border-radius: 5px;
-    margin-top: 30px;
     font-size: 18px;
     cursor: pointer;
     transition: opacity 0.15s;
@@ -79,4 +78,33 @@ body {
     border-radius: 5px;
     color: #004085;
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.small-inputs {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.small-input-group {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.small-input-label {
+    margin-right: 8px;
+    font-size: 14px;
+    color: #333;
+}
+
+.small-input-space {
+    text-align: center;
+    height: 20px;
+    width: 50px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
 }
