@@ -11,8 +11,10 @@ function calculate_brf() {
     const coll = parseFloat(document.getElementById('cl').value)
     const wind = parseFloat(document.getElementById('bsw').value)
     const brace = parseFloat(document.getElementById('bb').value)
+    const sw_number = parseFloat(document.getElementById('num_sw').value)
+    const ew_number = parseFloat(document.getElementById('num_sw').value)
     
-    const seismic_bracing_force = (((0.01*frame) + (0.01*column) + (breadth*length*(dead+coll)) + ((eave-blockwall)*length*dead*2) + (((((eave+slope*(breadth/2))+eave)/2) - 3)*breadth*dead*2) + ((breadth*3*0.2*20*blockwall)/eave))*seismic)/(2*brace)
+    const seismic_bracing_force = (((0.01*frame) + (0.01*column) + (breadth*length*(dead+coll)) + ((eave-blockwall)*length*dead*sw_number) + (((((eave+slope*(breadth/2))+eave)/2) - 3)*breadth*dead*ew_number) + ((breadth*3*0.2*20*blockwall)/eave))*seismic)/(2*brace)
     
     const wind_bracing_force = ((((eave+slope*(breadth/2))+eave)/2)*breadth*wind)/(2*2*brace)
 
