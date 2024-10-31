@@ -1,28 +1,112 @@
-function calculate_brf() {
-    const length = parseFloat(document.getElementById('bl').value)
-    const breadth = parseFloat(document.getElementById('bw').value)
-    const eave = parseFloat(document.getElementById('eh').value)
-    const slope = parseFloat(document.getElementById('s').value)
-    const blockwall = parseFloat(document.getElementById('bwh').value)
-    const seismic = parseFloat(document.getElementById('cs').value)
-    const frame = parseFloat(document.getElementById('wt').value)
-    const column = parseFloat(document.getElementById('ewcwt').value)
-    const dead = parseFloat(document.getElementById('dl').value)
-    const coll = parseFloat(document.getElementById('cl').value)
-    const wind = parseFloat(document.getElementById('bsw').value)
-    const brace = parseFloat(document.getElementById('bb').value)
-    const sw_number = parseFloat(document.getElementById('num_sw').value)
-    const ew_number = parseFloat(document.getElementById('num_sw').value)
-    
-    const seismic_bracing_force = (((0.01*frame) + (0.01*column) + (breadth*length*(dead+coll)) + ((eave-blockwall)*length*dead*sw_number) + (((((eave+slope*(breadth/2))+eave)/2) - 3)*breadth*dead*ew_number) + ((breadth*3*0.2*20*blockwall)/eave))*seismic)/(2*brace)
-    
-    const wind_bracing_force = ((((eave+slope*(breadth/2))+eave)/2)*breadth*wind)/(2*2*brace)
+<!DOCTYPE html>
+<html lang="en">
 
-    const sbfDiv = document.getElementById('sbf');
-    sbfDiv.innerText = `${sbfDiv.innerText} ${seismic_bracing_force.toFixed(2)}`;
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONLINE LOAD CALCULATOR</title>
+    <link rel="stylesheet" type="text/css" href="load_style.css">
+    <script src="load_script.js" defer></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const inputs = document.querySelectorAll(".input-space");
 
-    const wbfDiv = document.getElementById('wbf');
-    wbfDiv.innerText = `${wbfDiv.innerText} ${wind_bracing_force.toFixed(2)}`;
-    
-    }
-    
+            inputs.forEach((input, index) => {
+                input.addEventListener("keydown", function (event) {
+                    if (event.key === "Enter") {
+                        event.preventDefault(); // Prevent form submission on Enter
+                        const nextInput = inputs[index + 1];
+                        if (nextInput) {
+                            nextInput.focus(); // Move focus to the next input
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="mainframe">
+        <div class="input-grid">
+            <!-- Row 1 -->
+            <div class="input-group">
+                <label class="input-label" for="length1">Building Length:</label>
+                <input type="number" class="input-space" id="bl">
+            </div>
+            <div class="input-group">
+                <label class="input-label" for="width1">Building Width:</label>
+                <input type="number" class="input-space" id="bw">
+            </div>
+            <div class="input-group">
+                <label class="input-label" for="eave1">Eave Height:</label>
+                <input type="number" class="input-space" id="eh">
+            </div>
+
+            <!-- Row 2 -->
+            <div class="input-group">
+                <label class="input-label" for="slope1">Slope:</label>
+                <input type="number" class="input-space" id="s">
+            </div>
+            <div class="input-group">
+                <label class="input-label" for="length2">Blockwall Height:</label>
+                <input type="number" class="input-space" id="bwh">
+            </div>
+            <div class="input-group">
+                <label class="input-label" for="width2">Seismic Coefficient:</label>
+                <input type="number" class="input-space" id="cs">
+            </div>
+
+            <!-- Row 3 -->
+            <div class="input-group">
+                <label class="input-label" for="eave2">Total Frame Weight:</label>
+                <input type="number" class="input-space" id="wt">
+            </div>
+            <div class="input-group">
+                <label class="input-label" for="slope2">Total Endwall Column Weight:</label>
+                <input type="number" class="input-space" id="ewcwt">
+            </div>
+            <div class="input-group">
+                <label class="input-label" for="extra1">Dead Load:</label>
+                <input type="number" class="input-space" id="dl">
+            </div>
+
+            <!-- Row 4 -->
+            <div class="input-group">
+                <label class="input-label" for="extra2">Collateral Load:</label>
+                <input type="number" class="input-space" id="cl">
+            </div>
+            <div class="input-group">
+                <label class="input-label" for="extra3">Basic Wind:</label>
+                <input type="number" class="input-space" id="bsw">
+            </div>
+            <div class="input-group">
+                <label class="input-label" for="extra4">Number of Braced bays:</label>
+                <input type="number" class="input-space" id="bb">
+            </div>
+        </div>
+
+        <div class="small-inputs">
+            <div class="small-input-group">
+                <label class="small-input-label" for="smallInput1">SW:</label>
+                <input type="number" id="num_sw" class="small-input-space" value="2">
+            </div>
+            <div class="small-input-group">
+                <label class="small-input-label" for="smallInput2">EW:</label>
+                <input type="number" id="num_ew" class="small-input-space" value="2">
+            </div>
+        </div>        
+        
+
+        <button id="calculate-button" type="button" onclick="calculate_brf()">CALCULATE BRACING FORCE</button>
+
+        <!-- Results Display -->
+        <div id="results">
+            <div id="sbf">Seismic Bracing Force (horizontal): </div>
+            <div id="wbf">Wind Bracing Force (horizontal): </div>
+        </div>
+        
+    </div>
+</body>
+
+</html>
