@@ -1,37 +1,53 @@
-body{
-    margin: 0px;
-    background: black;
-}
-
-.mainbody{
-    width: 100%;
-    height: 100vh;
-}
-
-.title{
-  font-family: "Pixelify Sans", sans-serif;
+body {
+  margin: 0;
+  background: black;
   color: #39FF14;
-  margin: auto;
-  width: 30%;
+  font-family: "Pixelify Sans", sans-serif;
+}
+
+.mainbody {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  text-align: center;
   font-size: 50px;
   text-decoration: underline;
   text-underline-offset: 7px;
   text-decoration-thickness: 2px;
+  margin-bottom: 30px;
 }
 
-#buttons{
-    margin: 50px;
-    border-color: #39FF14;
-    border-radius: 5px;
-    border-width: 2px;
-    background: none;
-    color: #39FF14;
-    font-family: "Pixelify Sans", sans-serif;
-    padding: 10px 20px;
-    font-size: 20px;
-    transition: color 0.2s ease, backgroun 0.2s ease;
+.subtitle {
+  font-size: medium;
+  font-family: "Lucida Sans", Geneva, Verdana, sans-serif;
+  margin-top: 10px;
 }
-#buttons:hover{
-    color: black;
-    background: #39FF14;
+
+.subtitle a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.buttons a {
+  display: inline-block;
+  margin: 20px;
+  padding: 10px 20px;
+  font-size: 20px;
+  color: #39FF14;
+  background: none;
+  border: 2px solid #39FF14;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.buttons a:hover {
+  color: black;
+  background: #39FF14;
 }
