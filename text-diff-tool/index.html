@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Text File Diff Checker</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">COMPARE TEXT TOOL</p>
+        <h1>Compare two text files</h1>
+        <p class="subtitle">
+          Upload files or paste text, then view the differences with highlights.
+        </p>
+      </div>
+      <div class="hero-actions">
+        <button id="compareBtn" class="primary-btn">Compare</button>
+        <button id="clearBtn" class="secondary-btn">Clear</button>
+      </div>
+    </header>
+
+    <section class="editor-grid">
+      <article class="panel input-panel">
+        <div class="panel-header">
+          <div>
+            <h2>Original</h2>
+            <p>Left side / old version</p>
+          </div>
+          <label class="file-btn">
+            <input type="file" id="file1" accept=".txt,.csv,.json,.xml,.html,.css,.js,.md,.log,.sql,.py,.java,.c,.cpp,.ts" />
+            Upload file
+          </label>
+        </div>
+        <textarea id="text1" placeholder="Paste original text here..."></textarea>
+      </article>
+
+      <article class="panel input-panel">
+        <div class="panel-header">
+          <div>
+            <h2>Modified</h2>
+            <p>Right side / new version</p>
+          </div>
+          <label class="file-btn">
+            <input type="file" id="file2" accept=".txt,.csv,.json,.xml,.html,.css,.js,.md,.log,.sql,.py,.java,.c,.cpp,.ts" />
+            Upload file
+          </label>
+        </div>
+        <textarea id="text2" placeholder="Paste modified text here..."></textarea>
+      </article>
+    </section>
+
+    <section class="summary-row">
+      <div class="summary-card">
+        <span class="summary-label">Added</span>
+        <strong id="addedCount">0</strong>
+      </div>
+      <div class="summary-card">
+        <span class="summary-label">Removed</span>
+        <strong id="removedCount">0</strong>
+      </div>
+      <div class="summary-card">
+        <span class="summary-label">Changed</span>
+        <strong id="changedCount">0</strong>
+      </div>
+      <div class="summary-card neutral">
+        <span class="summary-label">Status</span>
+        <strong id="statusText">Waiting</strong>
+      </div>
+    </section>
+
+    <section class="panel result-panel">
+      <div class="panel-header results-header">
+        <div>
+          <h2>Differences</h2>
+          <p>Side-by-side view with line numbers and inline highlights</p>
+        </div>
+      </div>
+
+      <div class="legend">
+        <span><i class="legend-box added"></i> Added</span>
+        <span><i class="legend-box removed"></i> Removed</span>
+        <span><i class="legend-box changed"></i> Changed</span>
+        <span><i class="legend-box unchanged"></i> Unchanged</span>
+      </div>
+
+      <div class="diff-wrapper">
+        <div class="diff-column">
+          <div class="diff-column-title">Original</div>
+          <div id="leftDiff" class="diff-view"></div>
+        </div>
+        <div class="diff-column">
+          <div class="diff-column-title">Modified</div>
+          <div id="rightDiff" class="diff-view"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
