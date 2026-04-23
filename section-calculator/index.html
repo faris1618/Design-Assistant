@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Section Calculator</title>
+  <style>
+    :root {
+      --bg: #f3f4f6;
+      --panel: #ffffff;
+      --line: #111827;
+      --muted: #6b7280;
+      --accent: #2563eb;
+      --grid: #d1d5db;
+      --section: #dbeafe;
+      --section-stroke: #1d4ed8;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: #111827;
+    }
+
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 24px;
+    }
+
+    .panel, .viewer {
+      background: var(--panel);
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+
+    .panel {
+      padding: 20px;
+    }
+
+    .viewer {
+      padding: 16px;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin: 0 0 8px;
+    }
+
+    p.note {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 14px;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    .field input:focus {
+      outline: 2px solid rgba(37,99,235,0.15);
+      border-color: var(--accent);
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .stats {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid #e5e7eb;
+      display: grid;
+      gap: 8px;
+      font-size: 14px;
+    }
+
+    .stats div {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .stats span:last-child {
+      font-weight: 700;
+    }
+
+    svg {
+      width: 100%;
+      height: 760px;
+      display: block;
+      background: white;
+    }
+
+    .grid-line {
+      stroke: var(--grid);
+      stroke-width: 1;
+    }
+
+    .axis-line {
+      stroke: #9ca3af;
+      stroke-width: 1.5;
+      stroke-dasharray: 6 6;
+    }
+
+    .shape {
+      fill: var(--section);
+      stroke: var(--section-stroke);
+      stroke-width: 2;
+    }
+
+    .dim-line, .ext-line {
+      stroke: var(--line);
+      stroke-width: 1.5;
+    }
+
+    .dim-text, .label-text {
+      fill: var(--line);
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .subtle {
+      fill: var(--muted);
+      font-size: 13px;
+    }
+
+    .centroid {
+      fill: #00ff22;
+      stroke: #2b520c;
+      stroke-width: 1.5;
+    }
+
+    .overall_centroid {
+      fill: #dc2626;
+      stroke: #991b1b;
+      stroke-width: 1.5;
+    }
+
+.calc-panel {
+  grid-column: 1 / -1;
+  background: var(--panel);
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  padding: 24px;
+  margin-top: 8px;
+}
+
+.calc-panel h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+    @media (max-width: 900px) {
+      .wrap {
+        grid-template-columns: 1fr;
+      }
+
+      svg {
+        height: 560px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="panel">
+      <h1>Built-up I Section</h1>
+      <p class="note">Enter dimensions in m.</p>
+
+      <div class="field">
+        <label for="dw">Web depth, D<sub>w</sub></label>
+        <input id="dw" type="number" min="0" value="0.245" />
+      </div>
+
+      <div class="field">
+        <label for="tw">Web thickness, T<sub>w</sub></label>
+        <input id="tw" type="number" min="0" value="0.004" />
+      </div>
+
+      <div class="field">
+        <label for="bft">Top flange width, B<sub>ft</sub></label>
+        <input id="bft" type="number" min="0" value="0.125" />
+      </div>
+
+      <div class="field">
+        <label for="tft">Top flange thickness, T<sub>ft</sub></label>
+        <input id="tft" type="number" min="0" value="0.005" />
+      </div>
+
+      <div class="field">
+        <label for="bfb">Bottom flange width, B<sub>fb</sub></label>
+        <input id="bfb" type="number" min="0" value="0.125" />
+      </div>
+
+      <div class="field">
+        <label for="tfb">Bottom flange thickness, T<sub>fb</sub></label>
+        <input id="tfb" type="number" min="0" value="0.005" />
+      </div>
+
+      <div class="actions">
+        <button class="primary" id="drawBtn">Calculate</button>
+        <button class="secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="stats">
+        <div><span>Area</span><span id="areaVal">-</span></div>
+        <div><span>Weight</span><span id="wtVal">-</span></div>
+        <div><span>Iz</span><span id="IzVal">-</span></div>
+        <div><span>Iy</span><span id="IyVal">-</span></div>
+        <div><span>ȳ from bottom</span><span id="ybarVal">-</span></div>
+        <div><span>z̄ from left</span><span id="zbarVal">-</span></div>
+        <div><span>Sz</span><span id="SzVal">-</span></div>
+        <div><span>Sy</span><span id="SyVal">-</span></div>
+        <div><span>yp</span><span id="ypVal">-</span></div>
+        <div><span>zp</span><span id="zpVal">-</span></div>
+        <div><span>Zz</span><span id="ZzVal">-</span></div>
+        <div><span>Zy</span><span id="ZyVal">-</span></div>
+        <div><span>rz</span><span id="rzVal">-</span></div>
+        <div><span>ry</span><span id="ryVal">-</span></div>
+      </div>
+    </div>
+
+    <div class="viewer">
+      <svg id="svg" viewBox="0 0 900 760" aria-label="Built-up I section drawing">
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto-start-reverse">
+            <path d="M0,0 L8,4 L0,8 z" fill="#111827"></path>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+
+    <section class="calc-panel">
+  <h1>Section Property Calculations</h1>
+  <div id="calcContent"></div>
+</section>
+  </div>
+
+  <script>
+    const svg = document.getElementById('svg');
+    const inputs = {
+      dw: document.getElementById('dw'),
+      tw: document.getElementById('tw'),
+      bft: document.getElementById('bft'),
+      tft: document.getElementById('tft'),
+      bfb: document.getElementById('bfb'),
+      tfb: document.getElementById('tfb')
+    };
+
+    const defaults = { dw: 0.245, tw: 0.004, bft: 0.125, tft: 0.005, bfb: 0.125, tfb: 0.005 };
+
+    function num(id) {
+      return Math.max(0, Number(inputs[id].value));
+    }
+
+    function line(x1, y1, x2, y2, cls, withArrowStart = false, withArrowEnd = false) {
+      const el = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      el.setAttribute('x1', x1);
+      el.setAttribute('y1', y1);
+      el.setAttribute('x2', x2);
+      el.setAttribute('y2', y2);
+      el.setAttribute('class', cls);
+      if (withArrowStart) el.setAttribute('marker-start', 'url(#arrow)');
+      if (withArrowEnd) el.setAttribute('marker-end', 'url(#arrow)');
+      return el;
+    }
+
+    function rect(x, y, w, h, cls) {
+      const el = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      el.setAttribute('x', x);
+      el.setAttribute('y', y);
+      el.setAttribute('width', w);
+      el.setAttribute('height', h);
+      el.setAttribute('class', cls);
+      return el;
+    }
+
+    function text(x, y, str, cls = 'dim-text', anchor = 'middle') {
+      const el = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      el.setAttribute('x', x);
+      el.setAttribute('y', y);
+      el.setAttribute('class', cls);
+      el.setAttribute('text-anchor', anchor);
+      el.textContent = str;
+      return el;
+    }
+
+    function circle(x, y, r, cls) {
+      const el = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      el.setAttribute('cx', x);
+      el.setAttribute('cy', y);
+      el.setAttribute('r', r);
+      el.setAttribute('class', cls);
+      return el;
+    }
+
+    function clearSvg() {
+      const defs = svg.querySelector('defs');
+      svg.innerHTML = '';
+      svg.appendChild(defs);
+    }
+
+    function drawGrid(width = 900, height = 760, step = 50) {
+      for (let x = 0; x <= width; x += step) {
+        svg.appendChild(line(x, 0, x, height, 'grid-line'));
+      }
+      for (let y = 0; y <= height; y += step) {
+        svg.appendChild(line(0, y, width, y, 'grid-line'));
+      }
+    }
+
+    
+
+    function textWithSubscript(x, y, mainText, subText, cls = 'dim-text', anchor = 'middle') {
+  const el = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  el.setAttribute('x', x);
+  el.setAttribute('y', y);
+  el.setAttribute('class', cls);
+  el.setAttribute('text-anchor', anchor);
+
+  const main = document.createTextNode(mainText);
+  el.appendChild(main);
+
+  const sub = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+  sub.setAttribute('baseline-shift', 'sub');
+  sub.setAttribute('font-size', '75%');
+  sub.textContent = subText;
+  el.appendChild(sub);
+
+  return el;
+}
+
+function calculateSectionProperties() {
+  const dw = num('dw');
+  const tw = num('tw');
+  const bft = num('bft');
+  const tft = num('tft');
+  const bfb = num('bfb');
+  const tfb = num('tfb');
+
+  const areaTop = bft * tft;
+  const areaWeb = dw * tw;
+  const areaBot = bfb * tfb;
+  const area = areaTop + areaWeb + areaBot;
+
+  const weight = area * 7850;
+
+  const yt = tfb + dw + tft / 2;
+  const yw = tfb + dw / 2;
+  const yb = tfb / 2;
+
+  const ybar = (areaTop * yt + areaWeb * yw + areaBot * yb) / area;
+
+  const zbar = Math.max(bft, bfb) / 2;
+
+  const Iz =
+    (bft * Math.pow(tft, 3)) / 12 + areaTop * Math.pow(yt - ybar, 2) +
+    (tw * Math.pow(dw, 3)) / 12 + areaWeb * Math.pow(yw - ybar, 2) +
+    (bfb * Math.pow(tfb, 3)) / 12 + areaBot * Math.pow(yb - ybar, 2);
+
+  const Iy =
+    (tft * Math.pow(bft, 3)) / 12 +
+    (dw * Math.pow(tw, 3)) / 12 +
+    (tfb * Math.pow(bfb, 3)) / 12;
+
+  const overallDepth = dw + tft + tfb;
+  const Sz = Iz / Math.max(ybar, overallDepth - ybar);
+  const Sy = Iy / zbar;
+
+  const rz = Math.sqrt(Iz / area);
+  const ry = Math.sqrt(Iy / area);
+
+let yp;
+let Zz;
+
+if (area / 2 <= areaBot) {
+  yp = (area / 2) / bfb;
+
+  Zz =
+    (bfb * yp) * (yp / 2) +
+    (bfb * (tfb - yp)) * ((tfb - yp) / 2) +
+    areaWeb * (tfb - yp + dw / 2) +
+    areaTop * (tfb - yp + dw + tft / 2);
+
+} else if (area / 2 <= areaBot + areaWeb) {
+  yp = tfb + (area / 2 - areaBot) / tw;
+
+  const webBot = yp - tfb;
+  const webTop = tfb + dw - yp;
+
+  Zz =
+    areaBot * (yp - tfb / 2) +
+    (tw * webBot) * (webBot / 2) +
+    (tw * webTop) * (webTop / 2) +
+    areaTop * (tfb + dw + tft / 2 - yp);
+
+} else {
+  yp = tfb + dw + (area / 2 - areaBot - areaWeb) / bft;
+
+  const topBot = yp - tfb - dw;
+  const topTop = tft - topBot;
+
+  Zz =
+    areaBot * (yp - tfb / 2) +
+    areaWeb * (yp - tfb - dw / 2) +
+    (bft * topBot) * (topBot / 2) +
+    (bft * topTop) * (topTop / 2);
+}
+
+const zp=Math.max(bft, bfb) / 2;
+const Zy =
+  (tft * Math.pow(bft, 2)) / 4 +
+  (dw * Math.pow(tw, 2)) / 4 +
+  (tfb * Math.pow(bfb, 2)) / 4;
+
+  return {
+    area,
+    weight,
+    Iz,
+    Iy,
+    ybar,
+    zbar,
+    Sz,
+    Sy,
+    yp,
+    zp,
+    Zz,
+    Zy,
+    rz,
+    ry,
+    yt,
+    yw,
+    yb
+  };
+}
+
+function updateValues() {
+
+        const results = calculateSectionProperties(); 
+
+      document.getElementById('areaVal').textContent = results.area.toFixed(10) + ' m²';
+      document.getElementById('wtVal').textContent = results.weight.toFixed(10) + ' kg/m';
+      document.getElementById('IzVal').textContent = results.Iz.toFixed(10) + ' m⁴';
+      document.getElementById('IyVal').textContent = results.Iy.toFixed(10) + ' m⁴';
+      document.getElementById('ybarVal').textContent = results.ybar.toFixed(10) + ' m';
+      document.getElementById('zbarVal').textContent = results.zbar.toFixed(10) + ' m';
+      document.getElementById('SzVal').textContent = results.Sz.toFixed(10) + ' m³';
+      document.getElementById('SyVal').textContent = results.Sy.toFixed(10) + ' m³';
+      document.getElementById('ypVal').textContent = results.yp.toFixed(10) + ' m';
+      document.getElementById('zpVal').textContent = results.zp.toFixed(10) + ' m';
+      document.getElementById('ZzVal').textContent = results.Zz.toFixed(10) + ' m³';
+      document.getElementById('ZyVal').textContent = results.Zy.toFixed(10) + ' m³';
+      document.getElementById('rzVal').textContent = results.rz.toFixed(10) + ' m';
+      document.getElementById('ryVal').textContent = results.ry.toFixed(10) + ' m';
+    }
+
+    function draw() {
+      const dw = num('dw');
+      const tw = num('tw');
+      const bft = num('bft');
+      const tft = num('tft');
+      const bfb = num('bfb');
+      const tfb = num('tfb');
+
+      const overallDepth = tft + dw + tfb;
+      const maxWidth = Math.max(bft, bfb);
+
+      const drawW = 420;
+      const drawH = 560;
+      const scale = Math.min(drawW / maxWidth, drawH / overallDepth);
+
+      const topW = bft * scale;
+      const topT = tft * scale;
+      const botW = bfb * scale;
+      const botT = tfb * scale;
+      const webW = tw * scale;
+      const webH = dw * scale;
+
+      const cx = 350;
+      const topY = 90;
+      const leftTop = cx - topW / 2;
+      const leftBot = cx - botW / 2;
+      const leftWeb = cx - webW / 2;
+      const webY = topY + topT;
+      const botY = webY + webH;
+      const totalBottomY = botY + botT;
+
+      const results = calculateSectionProperties();
+      const yt = results.yt;
+      const yw = results.yw;
+      const yb = results.yb;
+      const ybar = results.ybar;
+
+      clearSvg();
+      drawGrid();
+
+      svg.appendChild(rect(leftTop, topY, topW, topT, 'shape'));
+      svg.appendChild(rect(leftWeb, webY, webW, webH, 'shape'));
+      svg.appendChild(rect(leftBot, botY, botW, botT, 'shape'));
+
+      svg.appendChild(line(cx, 40, cx, totalBottomY + 40, 'axis-line'));
+      const zY = totalBottomY - ybar * scale;
+      svg.appendChild(line(90, zY, 820, zY, 'axis-line'));
+
+      svg.appendChild(circle(cx, zY, 8, 'overall_centroid'));
+      svg.appendChild(text(cx - 28, zY - 10, 'ȳ', 'label-text', 'end'));
+
+      // Top width dimension
+      const dimTopY = topY - 42;
+      svg.appendChild(line(leftTop, topY - 12, leftTop, dimTopY, 'ext-line'));
+      svg.appendChild(line(leftTop + topW, topY - 12, leftTop + topW, dimTopY, 'ext-line'));
+      svg.appendChild(line(leftTop + 8, dimTopY, leftTop + topW - 8, dimTopY, 'dim-line', true, true));
+      svg.appendChild(textWithSubscript(cx, dimTopY - 10, 'B','ft'));
+
+      // Bottom width dimension
+      const dimBotY = totalBottomY + 52;
+      svg.appendChild(line(leftBot, totalBottomY + 12, leftBot, dimBotY, 'ext-line'));
+      svg.appendChild(line(leftBot + botW, totalBottomY + 12, leftBot + botW, dimBotY, 'ext-line'));
+      svg.appendChild(line(leftBot + 8, dimBotY, leftBot + botW - 8, dimBotY, 'dim-line', true, true));
+      svg.appendChild(textWithSubscript(cx, dimBotY + 26, 'B','fb'));
+
+      // Top thickness
+      const tx = leftTop + topW + 70;
+      svg.appendChild(line(leftTop + topW + 10, topY, tx, topY, 'ext-line'));
+      svg.appendChild(line(leftTop + topW + 10, topY + topT, tx, topY + topT, 'ext-line'));
+      svg.appendChild(line(tx, topY + 8, tx, topY + topT - 8, 'dim-line', true, true));
+      svg.appendChild(textWithSubscript(tx + 24, topY + topT / 2 + 5, 'T','ft', 'dim-text', 'start'));
+
+      // Bottom thickness
+      svg.appendChild(line(leftBot + botW + 10, botY, tx, botY, 'ext-line'));
+      svg.appendChild(line(leftBot + botW + 10, totalBottomY, tx, totalBottomY, 'ext-line'));
+      svg.appendChild(line(tx, botY + 8, tx, totalBottomY - 8, 'dim-line', true, true));
+      svg.appendChild(textWithSubscript(tx + 24, botY + botT / 2 + 5, 'T','fb', 'dim-text', 'start'));
+
+      // Web depth
+      const dx = leftWeb + webW + 150;
+      svg.appendChild(line(leftWeb + webW + 10, webY, dx, webY, 'ext-line'));
+      svg.appendChild(line(leftWeb + webW + 10, botY, dx, botY, 'ext-line'));
+      svg.appendChild(line(dx, webY + 8, dx, botY - 8, 'dim-line', true, true));
+      svg.appendChild(textWithSubscript(dx + 18, (webY + botY) / 2 + 5, 'D','w', 'dim-text', 'start'));
+
+      // Web thickness
+      const midWebY = webY + webH * 0.28;
+      svg.appendChild(line(leftWeb - 40, midWebY, leftWeb - 10, midWebY, 'dim-line'));
+      svg.appendChild(line(leftWeb + webW + 10, midWebY, leftWeb + webW + 40, midWebY, 'dim-line'));
+      svg.appendChild(line(leftWeb - 8, midWebY, leftWeb + 8, midWebY, 'dim-line', true, false));
+      svg.appendChild(line(leftWeb + webW - 8, midWebY, leftWeb + webW + 8, midWebY, 'dim-line', false, true));
+      svg.appendChild(textWithSubscript(leftWeb + webW + 52, midWebY + 6, 'T','w', 'dim-text', 'start'));
+
+      // Axes labels
+      svg.appendChild(line(cx, 30, cx, 55, 'dim-line', true, false));
+      svg.appendChild(text(cx, 18, 'Y', 'label-text'));
+      svg.appendChild(line(705, zY, 770, zY, 'dim-line', false, true));
+      svg.appendChild(text(777, zY + 6, 'Z', 'label-text', 'start'));
+
+      // Helpful part centroid guide markers
+      const yTopPx = totalBottomY - yt * scale;
+      const yWebPx = totalBottomY - yw * scale;
+      const yBotPx = totalBottomY - yb * scale;
+      svg.appendChild(circle(cx , yTopPx, 4, 'centroid'));
+      svg.appendChild(circle(cx , yWebPx, 4, 'centroid'));
+      svg.appendChild(circle(cx , yBotPx, 4, 'centroid'));
+      //svg.appendChild(text(20, 30, 'Live visual driven by input dimensions', 'subtle', 'start'));
+
+          updateValues();
+    }
+
+    document.getElementById('drawBtn').addEventListener('click', draw);
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      Object.keys(defaults).forEach(key => { inputs[key].value = defaults[key]; });
+      draw();
+
+    });
+
+    Object.values(inputs).forEach(input => input.addEventListener('input', draw));
+
+    draw();
+
+  </script>
+</body>
+</html>
