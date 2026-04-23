@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit Converter</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="script.js"></script>
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <div class="hero__content">
+        <p class="eyebrow">Fast • Clean • Practical</p>
+        <h1>Online Unit Converter</h1>
+        <p class="hero__text">
+          Convert length, area, volume, mass, temperature, pressure, speed, force, and more.
+        </p>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="category-section">
+        <div class="section-head">
+          <h2>Conversion Categories</h2>
+          <p>Select a category to begin.</p>
+        </div>
+
+        <div class="category-grid">
+          <button class="category-card active" data-category="length" id="cat-length">
+            <span class="category-card__icon">↔</span>
+            <span class="category-card__title">Length</span>
+          </button>
+
+          <button class="category-card" data-category="area" id="cat-area">
+            <span class="category-card__icon">▢</span>
+            <span class="category-card__title">Area</span>
+          </button>
+
+          <button class="category-card" data-category="volume" id="cat-volume">
+            <span class="category-card__icon">◫</span>
+            <span class="category-card__title">Volume</span>
+          </button>
+
+          <button class="category-card" data-category="mass" id="cat-mass">
+            <span class="category-card__icon">⚖</span>
+            <span class="category-card__title">Mass</span>
+          </button>
+
+          <button class="category-card" data-category="temperature" id="cat-temperature">
+            <span class="category-card__icon">°</span>
+            <span class="category-card__title">Temperature</span>
+          </button>
+
+          <button class="category-card" data-category="pressure" id="cat-pressure">
+            <span class="category-card__icon">⬇</span>
+            <span class="category-card__title">Pressure</span>
+          </button>
+
+          <button class="category-card" data-category="speed" id="cat-speed">
+            <span class="category-card__icon">➜</span>
+            <span class="category-card__title">Speed</span>
+          </button>
+
+          <button class="category-card" data-category="force" id="cat-force">
+            <span class="category-card__icon">⟰</span>
+            <span class="category-card__title">Force</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="converter-layout">
+        <div class="converter-card">
+          <div class="section-head">
+            <h2>Convert Units</h2>
+            <p id="selected-category-label">Currently selected: Length</p>
+          </div>
+
+          <form class="converter-form" id="converter-form">
+            <div class="form-group">
+              <label for="category">Category</label>
+              <select id="category" name="category">
+                <option value="length">Length</option>
+                <option value="area">Area</option>
+                <option value="volume">Volume</option>
+                <option value="mass">Mass</option>
+                <option value="temperature">Temperature</option>
+                <option value="pressure">Pressure</option>
+                <option value="speed">Speed</option>
+                <option value="force">Force</option>
+              </select>
+            </div>
+
+            <div class="converter-row">
+              <div class="form-group">
+                <label for="input-value">Value</label>
+                <input
+                  type="number"
+                  id="input-value"
+                  name="inputValue"
+                  placeholder="Enter value"
+                  step="any"
+                />
+              </div>
+
+              <button type="button" class="swap-btn" id="swap-btn" aria-label="Swap units">
+                ⇄
+              </button>
+
+              <div class="form-group">
+                <label for="output-value">Result</label>
+                <input
+                  type="text"
+                  id="output-value"
+                  name="outputValue"
+                  placeholder="Converted value"
+                  readonly
+                />
+              </div>
+            </div>
+
+            <div class="converter-row units-row">
+              <div class="form-group">
+                <label for="from-unit">From</label>
+                <select id="from-unit" name="fromUnit">
+                  <option value="meter">Meter (m)</option>
+                  <option value="millimeter">Millimeter (mm)</option>
+                  <option value="centimeter">Centimeter (cm)</option>
+                  <option value="kilometer">Kilometer (km)</option>
+                  <option value="inch">Inch (in)</option>
+                  <option value="foot">Foot (ft)</option>
+                  <option value="yard">Yard (yd)</option>
+                  <option value="mile">Mile (mi)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="to-unit">To</label>
+                <select id="to-unit" name="toUnit">
+                  <option value="millimeter">Millimeter (mm)</option>
+                  <option value="centimeter">Centimeter (cm)</option>
+                  <option value="meter" selected>Meter (m)</option>
+                  <option value="kilometer">Kilometer (km)</option>
+                  <option value="inch">Inch (in)</option>
+                  <option value="foot">Foot (ft)</option>
+                  <option value="yard">Yard (yd)</option>
+                  <option value="mile">Mile (mi)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="action-row">
+              <button type="submit" class="btn btn--primary" id="convert-btn">Convert</button>
+              <button type="reset" class="btn btn--secondary" id="clear-btn">Clear</button>
+            </div>
+          </form>
+
+          <div class="quick-convert">
+            <h3>Quick Picks</h3>
+            <div class="chip-list">
+              <button class="chip">mm → m</button>
+              <button class="chip">m → ft</button>
+              <button class="chip">kg → lb</button>
+              <button class="chip">°C → °F</button>
+              <button class="chip">kPa → psi</button>
+              <button class="chip">km/h → m/s</button>
+            </div>
+          </div>
+        </div>
+
+        <aside class="side-panel">
+          <div class="panel-card">
+            <h3>Recent Conversions</h3>
+            <ul class="history-list" id="history-list">
+              <li class="history-item">12 ft → 3.6576 m</li>
+              <li class="history-item">1000 mm → 1 m</li>
+              <li class="history-item">25 °C → 77 °F</li>
+            </ul>
+          </div>
+
+          <div class="panel-card">
+            <h3>Useful Notes</h3>
+            <ul class="notes-list">
+              <li>Use consistent categories for valid conversion pairs.</li>
+              <li>Temperature conversions need formula-based handling.</li>
+              <li>Hook your backend to the form IDs already provided.</li>
+            </ul>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
