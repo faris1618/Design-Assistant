@@ -1,53 +1,115 @@
 body {
   margin: 0;
-  background: black;
-  color: #39FF14;
   font-family: "Pixelify Sans", sans-serif;
+  color: #e5e7eb;
+  background: #020617;
 }
 
+/* Background + layout */
 .mainbody {
   width: 100%;
   height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  background:
+    radial-gradient(circle at 20% 20%, rgba(57, 255, 20, 0.15), transparent 40%),
+    radial-gradient(circle at 80% 30%, rgba(99, 102, 241, 0.15), transparent 40%),
+    linear-gradient(135deg, #020617, #0f172a);
 }
 
-.title {
+/* Glass container */
+.mainbody > div {
   text-align: center;
-  font-size: 50px;
-  text-decoration: underline;
-  text-underline-offset: 7px;
-  text-decoration-thickness: 2px;
-  margin-bottom: 30px;
 }
 
+/* Title */
+.title {
+  font-size: 56px;
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+
+  color: #39FF14;
+  text-shadow:
+    0 0 10px rgba(57, 255, 20, 0.7),
+    0 0 25px rgba(57, 255, 20, 0.4);
+
+  border-bottom: 2px solid rgba(57, 255, 20, 0.4);
+  display: inline-block;
+  padding-bottom: 8px;
+}
+
+/* Subtitle */
 .subtitle {
-  font-size: medium;
-  font-family: "Lucida Sans", Geneva, Verdana, sans-serif;
-  margin-top: 10px;
+  margin-top: 12px;
+  font-size: 14px;
+  color: #9ca3af;
+  font-family: system-ui, sans-serif;
 }
 
 .subtitle a {
-  color: inherit;
+  color: #39FF14;
   text-decoration: none;
+  font-weight: bold;
 }
 
+.subtitle a:hover {
+  text-decoration: underline;
+}
+
+/* Button container */
+.buttons {
+  margin-top: 40px;
+}
+
+/* Buttons */
 .buttons a {
   display: inline-block;
-  margin: 20px;
-  padding: 10px 20px;
-  font-size: 20px;
+  margin: 12px;
+  padding: 14px 28px;
+
+  font-size: 18px;
+  letter-spacing: 1px;
+
   color: #39FF14;
-  background: none;
-  border: 2px solid #39FF14;
-  border-radius: 5px;
   text-decoration: none;
-  transition: color 0.2s ease, background 0.2s ease;
+
+  border: 1px solid rgba(57, 255, 20, 0.5);
+  border-radius: 8px;
+
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(6px);
+
+  box-shadow:
+    0 0 10px rgba(57, 255, 20, 0.2),
+    inset 0 0 10px rgba(57, 255, 20, 0.05);
+
+  transition: all 0.25s ease;
 }
 
+/* Hover effect */
 .buttons a:hover {
   color: black;
   background: #39FF14;
+
+  box-shadow:
+    0 0 15px #39FF14,
+    0 0 40px rgba(57, 255, 20, 0.6);
+
+  transform: translateY(-3px) scale(1.05);
+}
+
+.card {
+  padding: 50px 60px;
+  border-radius: 16px;
+
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+
+  box-shadow:
+    0 0 40px rgba(0, 0, 0, 0.6),
+    0 0 20px rgba(57, 255, 20, 0.1);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
