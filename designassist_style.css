@@ -1,17 +1,22 @@
-body {
-  margin: 0;
-  font-family: "Pixelify Sans", sans-serif;
-  color: #e5e7eb;
-  background: #020617;
+body { 
+  margin: 0; 
+  font-family: "Pixelify Sans", sans-serif; 
+  color: #e5e7eb; 
+  background: #020617; 
 }
 
-/* Background + layout */
-.mainbody {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Layout */
+.mainbody { 
+  width: 100%; 
+  min-height: 100vh; 
+
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+
+  padding: -5px -5px 40px; 
+  gap: 40px; 
 
   background:
     radial-gradient(circle at 20% 20%, rgba(57, 255, 20, 0.15), transparent 40%),
@@ -19,77 +24,167 @@ body {
     linear-gradient(135deg, #020617, #0f172a);
 }
 
-/* Glass container */
-.mainbody > div {
-  text-align: center;
+/* Card */
+.card { 
+  padding: 50px 60px; 
+  border-radius: 16px; 
+
+  background: rgba(255, 255, 255, 0.03); 
+  backdrop-filter: blur(12px); 
+
+  box-shadow:
+    0 0 40px rgba(0, 0, 0, 0.6),
+    0 0 20px rgba(57, 255, 20, 0.1); 
+
+  border: 1px solid rgba(255, 255, 255, 0.08); 
+  text-align: center; 
 }
 
-/* Title */
-.title {
-  font-size: 56px;
-  letter-spacing: 3px;
-  margin-bottom: 10px;
+/* Titles */
+.title { 
+  font-size: 56px; 
+  letter-spacing: 3px; 
+  margin-bottom: 10px; 
 
-  color: #39FF14;
+  color: #39FF14; 
   text-shadow:
     0 0 10px rgba(57, 255, 20, 0.7),
-    0 0 25px rgba(57, 255, 20, 0.4);
+    0 0 25px rgba(57, 255, 20, 0.4); 
 
-  border-bottom: 2px solid rgba(57, 255, 20, 0.4);
-  display: inline-block;
-  padding-bottom: 8px;
+  border-bottom: 2px solid rgba(57, 255, 20, 0.4); 
+  display: inline-block; 
+  padding-bottom: 8px; 
+}
+
+.title.small {
+  font-size: 24px;
 }
 
 /* Subtitle */
-.subtitle {
-  margin-top: 12px;
-  font-size: 14px;
-  color: #9ca3af;
-  font-family: system-ui, sans-serif;
+.subtitle { 
+  margin-top: 12px; 
+  font-size: 14px; 
+  color: #9ca3af; 
+  font-family: system-ui, sans-serif; 
 }
 
-.subtitle a {
-  color: #39FF14;
-  text-decoration: none;
-  font-weight: bold;
+.subtitle a { 
+  color: #39FF14; 
+  text-decoration: none; 
+  font-weight: bold; 
 }
 
-.subtitle a:hover {
-  text-decoration: underline;
-}
-
-/* Button container */
-.buttons {
-  margin-top: 40px;
+.subtitle a:hover { 
+  text-decoration: underline; 
 }
 
 /* Buttons */
-.buttons a {
-  display: inline-block;
-  margin: 12px;
-  padding: 14px 28px;
+.buttons { 
+  margin-top: 40px; 
+}
 
-  font-size: 18px;
+.buttons a { 
+  display: inline-block; 
+  margin: 12px; 
+  padding: 14px 28px; 
+
+  font-size: 18px; 
+  letter-spacing: 1px; 
+
+  color: #39FF14; 
+  text-decoration: none; 
+
+  border: 1px solid rgba(57, 255, 20, 0.5); 
+  border-radius: 8px; 
+
+  background: rgba(255, 255, 255, 0.02); 
+  backdrop-filter: blur(6px); 
+
+  box-shadow:
+    0 0 10px rgba(57, 255, 20, 0.2),
+    inset 0 0 10px rgba(57, 255, 20, 0.05); 
+
+  transition: all 0.25s ease; 
+}
+
+.buttons a:hover { 
+  color: black; 
+  background: #39FF14; 
+
+  box-shadow:
+    0 0 15px #39FF14,
+    0 0 40px rgba(57, 255, 20, 0.6); 
+
+  transform: translateY(-3px) scale(1.05); 
+}
+
+/* Form Card width */
+.form-card {
+  width: 100%;
+  max-width: 350px; /* smaller width */
+  padding: 30px 25px; /* tighter spacing */
+}
+
+/* Form layout (horizontal style) */
+form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* Inputs */
+form input,
+form textarea {
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(57, 255, 20, 0.3);
+
+  background: rgba(255, 255, 255, 0.02);
+  color: #e5e7eb;
+
+  font-family: system-ui, sans-serif;
+  box-sizing: border-box;
+
+  width: 100%;
+  resize: none !important;
+  overflow: hidden;
+}
+
+/* Focus effect */
+form input:focus,
+form textarea:focus {
+  outline: none;
+  border-color: #39FF14;
+  box-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+}
+
+/* Full width elements */
+form textarea {
+  grid-column: span 2;
+  min-height: 10px;
+  resize: vertical;
+}
+
+form button {
+  grid-column: span 2;
+
+  margin-top: 10px;
+  padding: 12px;
+
+  font-size: 16px;
   letter-spacing: 1px;
 
   color: #39FF14;
-  text-decoration: none;
+  background: transparent;
 
   border: 1px solid rgba(57, 255, 20, 0.5);
   border-radius: 8px;
 
-  background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(6px);
-
-  box-shadow:
-    0 0 10px rgba(57, 255, 20, 0.2),
-    inset 0 0 10px rgba(57, 255, 20, 0.05);
-
+  cursor: pointer;
   transition: all 0.25s ease;
 }
 
-/* Hover effect */
-.buttons a:hover {
+form button:hover {
   color: black;
   background: #39FF14;
 
@@ -97,19 +192,17 @@ body {
     0 0 15px #39FF14,
     0 0 40px rgba(57, 255, 20, 0.6);
 
-  transform: translateY(-3px) scale(1.05);
+  transform: translateY(-2px);
 }
 
-.card {
-  padding: 50px 60px;
-  border-radius: 16px;
+/* Mobile */
+@media (max-width: 600px) {
+  form {
+    grid-template-columns: 1fr;
+  }
 
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
-
-  box-shadow:
-    0 0 40px rgba(0, 0, 0, 0.6),
-    0 0 20px rgba(57, 255, 20, 0.1);
-
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  form textarea,
+  form button {
+    grid-column: span 1;
+  }
 }
