@@ -1,39 +1,85 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Design Assistant</title>
-  <link rel="stylesheet" href="designassist_style.css" />
-  <link rel="icon" type="image/x-icon" href="logo.png" />
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+  <meta charset="UTF-8" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+  <title>Design Assistant</title> 
+  <link rel="stylesheet" href="designassist_style.css" /> 
+  <link rel="icon" type="image/png" href="logo.png" /> 
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet" />
-</head>
-<body>
+  <link rel="preconnect" href="https://fonts.googleapis.com" /> 
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /> 
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet" /> 
+</head> 
 
+<body> 
 
-  <div class="mainbody">
-  <div class="card">
-    <div class="title">DESIGN TOOLS</div>
+<div class="mainbody"> 
 
-    <p class="subtitle">
-      CREATED BY 
-      <a href="https://www.linkedin.com/in/faris-sayed/" target="_blank">
-        FARIS SAYED
-      </a>
-    </p>
+  <!-- MAIN CARD -->
+  <div class="card"> 
+    <div class="title">DESIGN TOOLS</div> 
 
-    <div class="buttons">
-          <a href="INTERPOLATE/interpol.html" target="_blank">INTERPOLATE</a>
-      <a href="text-diff-tool/index.html" target="_blank">COMPARE TEXT</a>
-      <a href="unit-converter/index.html" target="_blank">UNIT CONVERTER</a>
-      <a href="section-calculator/index.html" target="_blank">SECTION CALCULATOR</a>
-    </div>
-  </div>
+    <p class="subtitle"> 
+      CREATED BY  
+      <a href="https://www.linkedin.com/in/faris-sayed/" target="_blank">FARIS SAYED</a> 
+    </p> 
+
+    <div class="buttons"> 
+      <a href="INTERPOLATE/interpol.html" target="_blank">INTERPOLATE</a> 
+      <a href="text-diff-tool/index.html" target="_blank">COMPARE TEXT</a> 
+      <a href="unit-converter/index.html" target="_blank">UNIT CONVERTER</a> 
+      <a href="section-calculator/index.html" target="_blank">SECTION CALCULATOR</a> 
+      <a href="beam-calculator/index.html" target="_blank">BEAM CALCULATOR</a> 
+    </div> 
+  </div> 
+
+<div class="card form-card">  
+  <div class="title small">FEEDBACK</div>  
+
+  <form id="feedback-form">
+          <input type="hidden" name="access_key" value="ccc95311-3d45-4200-8bf0-135cef23ed78">  
+
+    <input type="text" name="name" placeholder="Your Name" required>  
+    <input type="email" name="email" placeholder="Your Email" required>  
+
+    <textarea name="message" placeholder="Your Message" required></textarea>  
+
+    <button type="submit">Send Message</button>  
+  </form>
+
+  <p id="form-status"></p>
 </div>
 
+</div> 
 
-</body>
+<script id="q2g1fp">
+const form = document.getElementById("feedback-form");
+const status = document.getElementById("form-status");
+
+form.addEventListener("submit", function(e) {
+  e.preventDefault(); // 🚫 stop redirect
+
+  const formData = new FormData(form);
+
+  fetch("https://api.web3forms.com/submit", {
+    method: "POST",
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert("✅ Message sent successfully!");
+      form.reset();
+    } else {
+      alert("❌ Something went wrong!"); 
+    }
+  })
+  .catch(() => {
+    alert("❌ Something went wrong!"); 
+  });
+});
+</script>
+
+</body> 
 </html>
